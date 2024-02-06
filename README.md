@@ -4,7 +4,19 @@
 When opening a deep link on iOS from a terminated state, the `GoRouter`'s `redirect` method handles `/` first, immediately followed by the expected deep link path.  
 This is different from the behavior on Android when opening a deep link from a terminated state. Android will simply handle the expected deep link path.
 
-`Insert screen recordings of each OS`
+Android behavior:
+
+
+https://github.com/ChopinDavid/go_router_bug_example/assets/27712906/1d7fabf7-835b-4857-bb42-f1ef27b0e851
+
+iOS behavior:
+
+
+https://github.com/ChopinDavid/go_router_bug_example/assets/27712906/4118cb3e-434b-4f58-a8bc-9930337d85a7
+
+
+
+
 ## What this project is
 This project serves as a minimal reproducible sample that demonstrates this bug. Unfortunately, there is nothing minimal about handling deep links in an iOS project and there is some additional configuration that will need to be done for each individual who clones this project.
 ## Set up
@@ -14,20 +26,35 @@ This is a deep link bug, which requires the setting up of an [apple-app-site-ass
 After cloning this repository, you should follow the above documentation to upload an apple-app-site-association file to your domain. The AASA file should exist at `https://<fully qualified domain>/.well-known/apple-app-site-association` and look something like this:
 
 ```json  
-{  
- "applinks": { "apps": [], "details": [ { "appID": "<teamId>.com.example.goRouterBugExample", "paths": [ "/", "/details" ] } ] }}  
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "<teamId>.com.example.goRouterBugExample",
+        "paths": [
+          "/",
+          "/details"
+        ]
+      }
+    ]
+  }
+}  
 ```  
 where `<teamId>` is your Team ID associated with the certificate you are signing the app with. If you are unsure what this value is, it can be found [here](https://developer.apple.com/account):
 
-`Insert picture here`
+<img width="948" alt="Screenshot 2024-02-06 at 8 25 25 AM" src="https://github.com/ChopinDavid/go_router_bug_example/assets/27712906/13ceab0f-cdc2-4f1d-821d-48f05f93a4ec">
+
 
 You will, of course, also need to open the Runner project (located at `go_router_bug_example/ios/Runner.xcodeproj`) and sign the project. You can do this by selecting your "Runner" target > General > Signing.
 
-`Insert picture here`
+<img width="1274" alt="Screenshot 2024-02-06 at 8 29 19 AM" src="https://github.com/ChopinDavid/go_router_bug_example/assets/27712906/e7bf31cd-98cf-4816-a174-659a74174274">
+
 
 You will then need to add your associated domain you are deep linking through on this same page:
 
-`Insert picture here`
+<img width="831" alt="Screenshot 2024-02-06 at 8 30 47 AM" src="https://github.com/ChopinDavid/go_router_bug_example/assets/27712906/4c69fc79-5209-4e14-aafc-b5fda7cea9bc">
+
 
 ### Android
 Android configuration is not necessary to see this bug and is only useful to compare iOS deep link behavior to the (arguably better) Android deep link behavior. If you do want to set up this project to deep link through Android, follow [the steps for verifying Android App Links](https://developer.android.com/training/app-links/verify-android-applinks).
